@@ -1,4 +1,6 @@
 #import "Basic";
+#import "task";
+
 
 #scope_file cmd_help :: () {
     print("Unknown command\n");
@@ -10,7 +12,6 @@
         cmd_help();
     }
     main_command_flag := args[1];
-    print("% \n", main_command_flag);
     if main_command_flag == "add" {
         cmd_add(args);
     } else if main_command_flag == "list" {
@@ -24,18 +25,21 @@
 
 #scope_file cmd_add :: (args: [] string) {
     if (args.count < 3) {
-        print("Insufficient arguments\n");
+        print("[Error] Insufficient arguments\n");
         return;
     }
+    print("%\n\n", "[Info] Add mode");
     for 2..args.count - 1 {
         print("Adding task: %\n", args[it]);
+        task_add(23, args[it]);
     }
-
-    print("%\n", "[Info] Add mode");
+    print("\n");
 }
 
 #scope_file cmd_list :: () {
-    print("%\n", "a");
+    print("%\n\n", "[Info] List mode");
+    task_list();
+    print("\n");
 }
 
 #scope_file cmd_skip :: () {

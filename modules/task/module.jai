@@ -23,7 +23,7 @@ task_add :: (id: int, content: string, status: Task_Status = Task_Status.TASK_UN
 task_list :: () {
     count := task_array.count;
     if (count == 0) {
-        print("No tasks found.");
+        print("[INFO] No tasks found.\n");
         return;
     }
     ele: Task;
