@@ -1,7 +1,7 @@
 #import "Basic";
 #import "File";
 #import "String";
-
+#import "cli";
 
 TASKS_FOLDER :: "./.tasks";
 task_array: [..] Task;
@@ -19,29 +19,31 @@ Task :: struct {
 }
 
 main :: () {
+    args: = get_command_line_arguments();
+    cmd_parse_args(args);
     // rc := make_directory_if_it_does_not_exist(TASKS_FOLDER);
     // if (!rc) return;
     // print("[INFO] Successfully created % directory.\n", TASKS_FOLDER);
     //
-    fp, ok := file_open("./.tasks/task", for_writing = false, keep_existing_content = true, log_errors = true);
-    assert(ok);
-    defer file_close(*fp);
-
+    // fp_read, ok_read := file_open("./.tasks/task", for_writing = false, log_errors = true);
+    // assert(ok_read);
     //
-    // task_add(12, "ss", .TASK_COMPLETED);
-    // task_add(11, "aa", .TASK_COMPLETED);
-    // task_add(13, "yy", .TASK_COMPLETED);
+    // task_load(*fp_read);
+    // file_close(*fp_read);
+    //
+    //
+    // fp, ok := file_open("./.tasks/task", for_writing = true, log_errors = true);
+    // assert(ok);
+    // defer file_close(*fp);
+    //
+    // // task_add(12, "ss", .TASK_COMPLETED);
     // task_list();
     //
-    //
-    // file_seek(fp, 0, .END);
+    // //
+    // // file_seek(fp, 0, .END);
     // task_save(*fp);
+    //
 
-
-    // t: Task = task_from_string("23;SSS DDD;Completed");
-    // print("Task : %\n", t);
-
-    task_load(*fp);
 }
 
 task_add :: (id: int, content: string, status: Task_Status = Task_Status.TASK_UNCOMPLETED) {
@@ -117,7 +119,7 @@ task_load :: (fp: *File) {
     assert(read_ok);
     parts := split(rest, #char "\n");
     for 0..parts.count - 2 {
-        print("%\n", parts[it]);
-
+        t = task_from_string(parts[it]);
+        array_add(*task_array, t);
     }
 }
