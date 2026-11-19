@@ -29,7 +29,13 @@ task_list :: () {
     ele: Task;
     for 0..count - 1 {
         ele = task_array[it];
-        print("% % %\n", ele.id, ele.content, task_status_to_string(ele.status));
+        SPACES := 24;
+        SPACES -= ele.id.count;
+        print("[%]", ele.id);
+        for 0..SPACES - 1 {
+            print(" ");
+        }
+        print("% (%)\n", ele.content, task_status_to_string(ele.status));
     }
 }
 
