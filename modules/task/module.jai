@@ -1,6 +1,6 @@
 #import "File";
 #import "Basic";
-#import "String";
+#import "id";
 
 Task_Status :: enum {
     TASK_COMPLETED;
@@ -24,6 +24,7 @@ task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK
     print("%\n", main_file_name);
     fp, ok := file_open(main_file_name, for_writing = true, log_errors = true);
     assert(ok);
+    defer file_close(*fp);
     assert(file_write(*fp, content));
 }
 
@@ -66,35 +67,24 @@ task_string_to_status :: (s: string) -> Task_Status {
     }
 }
 
-task_to_string :: (t: Task) -> string {
-    builder: String_Builder;
-    defer free_buffers(*builder);
 
-    print_to_builder(*builder, "%|%|%\n", t.id, t.content, task_status_to_string(t.status));
-
-    return builder_to_string(*builder);
-}
-
-task_from_string :: (s: string) -> Task {
-    parts := split(s, "|");
-    id := parts[0];
-    content := parts[1];
-    status := task_string_to_status(parts[2]);
-    // print("% % %\n", id, content, status);
-    return .{
-        id, content, status
-    }
-}
-
-
-task_load :: (fp: *File) {
+task_load :: () {
     t: Task;
-    rest, read_ok := read_entire_file(fp);
-    assert(read_ok);
-    parts := split(rest, #char "\n");
-    for 0..parts.count - 2 {
-        t = task_from_string(parts[it]);
+    dirs_in_save := directory_parsing("tasks");
+    print("[INFO] Tasks list: %\n", dirs_in_save);
+    for dirs_in_save {
+        id := it;
+        folder_name := tprint("./tasks/%", id);
+        main_file_name := tprint("%/main.md", folder_name);
+        fp, ok := file_open(main_file_name, for_writing = false, log_errors = true);
+        assert(ok);
+        defer file_close(*fp);
+        rest, read_ok := read_entire_file(fp);
+        assert(read_ok);
+        t = .{
+            id, rest, .TASK_UNCOMPLETED
+        };
         array_add(*task_array, t);
     }
-    print("[INFO] Loaded tasks file successfully.\n");
+    print("[INFO] Loaded tasks folders successfully.\n");
 }

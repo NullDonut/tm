@@ -12,10 +12,10 @@
     return sprint("%_%_%_%", ct.year, ct.month_starting_at_0, ct.day_of_month_starting_at_0, instant.nanoseconds);
 }
 
-#scope_export directory_parsing :: () -> [] string {
+#scope_export directory_parsing :: (path: string) -> [] string {
     sarr: [..] string;
 
-    pdir: *DIR = opendir(".tasks");
+    pdir: *DIR = opendir(to_c_string(path));
     if (!pdir) {
         print("[Error] Failed parsing tasks folder\n");
         exit(1);
@@ -28,10 +28,5 @@
         array_add(*sarr, s);
     }
 
-    print("%\n", sarr);
     return sarr;
-}
-
-main :: () {
-    directory_parsing();
 }

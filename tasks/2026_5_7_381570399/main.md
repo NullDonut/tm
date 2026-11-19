@@ -1,0 +1,1 @@
+Add all info block in a info logger with a switch
