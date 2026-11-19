@@ -18,6 +18,13 @@ task_array: [..] Task;
 
 task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK_UNCOMPLETED) {
     array_add(*task_array, Task.{ id, content, status });
+    folder_name := tprint("./tasks/%", id);
+    main_file_name := tprint("%/main.md", folder_name);
+    make_directory_if_it_does_not_exist(folder_name, recursive = true);
+    print("%\n", main_file_name);
+    fp, ok := file_open(main_file_name, for_writing = true, log_errors = true);
+    assert(ok);
+    assert(file_write(*fp, content));
 }
 
 task_list :: () {
@@ -79,13 +86,6 @@ task_from_string :: (s: string) -> Task {
     }
 }
 
-task_save :: (fp: *File) {
-    for task_array {
-        ele := task_to_string(it);
-        assert(file_write(fp, ele));
-    }
-    print("[INFO] Saved to tasks file successfully.\n");
-}
 
 task_load :: (fp: *File) {
     t: Task;

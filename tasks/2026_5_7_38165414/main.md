@@ -1,0 +1,1 @@
+Add windows path fixes just like main in task_add
