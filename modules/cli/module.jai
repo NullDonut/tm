@@ -1,5 +1,6 @@
 #import "Basic";
 #import "task";
+#import "id";
 
 
 #scope_file cmd_help :: () {
@@ -31,7 +32,7 @@
     print("%\n\n", "[Info] Add mode");
     for 2..args.count - 1 {
         print("Adding task: %\n", args[it]);
-        task_add(23, args[it]);
+        task_add(id_generator(), args[it]);
     }
     print("\n");
 }

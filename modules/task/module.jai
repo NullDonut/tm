@@ -9,14 +9,14 @@ Task_Status :: enum {
 }
 
 Task :: struct {
-    id: int;
+    id: string;
     content: string;
     status: Task_Status;
 }
 
 task_array: [..] Task;
 
-task_add :: (id: int, content: string, status: Task_Status = Task_Status.TASK_UNCOMPLETED) {
+task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK_UNCOMPLETED) {
     array_add(*task_array, Task.{ id, content, status });
 }
 
@@ -64,10 +64,7 @@ task_to_string :: (t: Task) -> string {
 
 task_from_string :: (s: string) -> Task {
     parts := split(s, "|");
-    id, ok, _ := to_integer(parts[0]);
-    if (!ok) print(
-        "Error Occured in parsing the saved data."
-    );
+    id := parts[0];
     content := parts[1];
     status := task_string_to_status(parts[2]);
     // print("% % %\n", id, content, status);
