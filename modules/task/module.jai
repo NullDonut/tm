@@ -117,13 +117,13 @@ task_list :: () {
 task_individual_list :: (it: int) {
     ele: Task;
     ele = task_array[it];
-    SPACES := 24;
+    SPACES := 20;
     SPACES -= ele.id.count;
     print("[%]", ele.id);
     for 0..SPACES - 1 {
         print(" ");
     }
-    print("% (%)\n", ele.content, task_status_to_string(ele.status));
+    print("%\n", ele.content /** , task_status_to_string(ele.status)**/); // Will be implemented in future
 
 }
 
