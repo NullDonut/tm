@@ -32,7 +32,7 @@
     print("%\n\n", "[Info] Add mode");
     for 2..args.count - 1 {
         print("Adding task: %\n", args[it]);
-        task_add(id_generator(), args[it]);
+        task_add(hex_gen(6), args[it]);
     }
     print("\n");
 }

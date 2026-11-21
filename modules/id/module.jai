@@ -1,16 +1,18 @@
 #import "Extensions/Time";
 #import "Basic";
 #import "POSIX";
+#import "Random";
 
+// Time function could be used later on
 
-#scope_export id_generator :: () -> string {
-    instant, error := timestamp_now();
-    assert(error.kind == .NONE);
-    a := seconds_to_apollo(instant.seconds);
-    ct := to_calendar(a);
-
-    return sprint("%_%_%_%", ct.year, ct.month_starting_at_0, ct.day_of_month_starting_at_0, instant.nanoseconds);
-}
+// #scope_export id_generator :: () -> string {
+//     instant, error := timestamp_now();
+//     assert(error.kind == .NONE);
+//     a := seconds_to_apollo(instant.seconds);
+//     ct := to_calendar(a);
+//
+//     return sprint("%_%_%_%", ct.year, ct.month_starting_at_0, ct.day_of_month_starting_at_0, instant.nanoseconds);
+// }
 
 #scope_export directory_parsing :: (path: string) -> [] string {
     sarr: [..] string;
@@ -29,4 +31,24 @@
     }
 
     return sarr;
+}
+
+#scope_export hex_gen :: (count: int) -> string {
+    arr: [..] u8;
+    defer array_free(arr);
+    r: Random_State;
+    instant, error := timestamp_now();
+    assert(error.kind == .NONE);
+    random_seed(*r, xx instant.nanoseconds);
+    for 1..count {
+        w: = random_get_within_range(*r, 1, 36);
+        if w <= 10 {
+            w += 47;
+        } else if w <= 36 {
+            w += 97 - 11;
+        }
+        array_add(*arr, xx w);
+    }
+
+    return to_string(arr);
 }
