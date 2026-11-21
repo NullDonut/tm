@@ -4,6 +4,8 @@
 #import "cli";
 #import "String";
 #import "File_Utilities";
+#import "Print_Color";
+#import "Extensions/Postgres";
 
 // Structs and Enums
 Task_Status :: enum {
@@ -30,6 +32,7 @@ Find_Result :: struct {
     status: Find_Status = .NOT_FOUND;
     idx: s64 = -1;
     idx_possibles: [..] s64;
+    common_chars_count: int;
 }
 
 
@@ -56,12 +59,15 @@ task_find :: (input_id: string) -> Find_Result {
     if (ft.idx_possibles.count == 1) {
         ft.idx = ft.idx_possibles[0];
         ft.status = .FOUND;
+        ft.common_chars_count = -1;
     } else if (ft.idx_possibles.count > 1) {
         ft.idx = -1;
         ft.status = .AMBIGUOS;
+        ft.common_chars_count = input_id.count;
     } else {
         ft.idx = -1;
         ft.status = .NOT_FOUND;
+        ft.common_chars_count = 0;
     }
 
     return ft;
@@ -76,7 +82,7 @@ task_show :: (s: string) {
     } else if (ft.status == .AMBIGUOS) {
         print("Multiple elements found from the prefix.\n");
         for ft.idx_possibles {
-            task_individual_list(it);
+            task_individual_list(it, ft.common_chars_count);
         }
         print("Please use more accurate prefix\n");
     } else {
@@ -95,7 +101,7 @@ task_remove :: (s: string) {
     } else if (ft.status == .AMBIGUOS) {
         print("Multiple elements found from the prefix.\n");
         for ft.idx_possibles {
-            task_individual_list(it);
+            task_individual_list(it, ft.common_chars_count);
         }
         print("Please use more accurate prefix\n");
     } else {
@@ -110,16 +116,21 @@ task_list :: () {
         return;
     }
     for 0..count - 1 {
-        task_individual_list(it);
+        task_individual_list(it, task_array[it].id.count);
     }
 }
 
-task_individual_list :: (it: int) {
+task_individual_list :: (it: int, color_count: int) {
     ele: Task;
     ele = task_array[it];
     SPACES := 20;
     SPACES -= ele.id.count;
-    print("[%]", ele.id);
+    print("[");
+    coloured_slice: string = slice(ele.id, 0, color_count);
+    uncoloured_slice: string = slice(ele.id, color_count, ele.id.count - color_count + 1);
+    print_color("%", coloured_slice, color = .GREEN, style = .BOLD);
+    print("%", uncoloured_slice);
+    print("]");
     for 0..SPACES - 1 {
         print(" ");
     }
