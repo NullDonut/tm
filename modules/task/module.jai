@@ -1,6 +1,7 @@
 #import "File";
 #import "Basic";
 #import "id";
+#import "cli";
 #import "String";
 #import "File_Utilities";
 
@@ -105,7 +106,7 @@ task_remove :: (s: string) {
 task_list :: () {
     count := task_array.count;
     if (count == 0) {
-        print("[INFO] No tasks found.\n");
+        print("No tasks found.\n");
         return;
     }
     for 0..count - 1 {
@@ -150,7 +151,7 @@ task_string_to_status :: (s: string) -> Task_Status {
 task_load :: () {
     t: Task;
     dirs_in_save := directory_parsing("tasks");
-    print("[INFO] Tasks list: %\n", dirs_in_save);
+    cmd_info("Tasks list: %\n", dirs_in_save);
     for dirs_in_save {
         id := it;
         folder_name := tprint("./tasks/%", id);
@@ -165,5 +166,5 @@ task_load :: () {
         };
         array_add(*task_array, t);
     }
-    print("[INFO] Loaded tasks folders successfully.\n");
+    cmd_info("Loaded tasks folders successfully.\n");
 }
