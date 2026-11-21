@@ -1,6 +1,8 @@
 ### JTask — Preliminary Blueprint
 
-Goal: A minimal, filesystem-based task manager written in Jai.
+Goal: A minimal, filesystem-based md task manager written in Jai.
+
+This is a task list that be used as a issue tracker,bug tracker and go along with your project (GIT).
 
 ### 1\. Storage
 
@@ -8,18 +10,25 @@ Goal: A minimal, filesystem-based task manager written in Jai.
 project/
 └── .jtask/
     └── tasks/
-        ├── a7f2c9b1
-        ├── b912e4a2
+        ├── a7f2c9b1/TASK.md
+        ├── b912e4a2/TASK.md
         └── c831d7f4
 ```
 
-* One file per task.
+* One main task file per task and description and other supporting documents.
 
-* Filename is a randomly generated, permanent ID.
+* Filename is a randomly generated, permanent ID (a-z and 0-9).
 
-* File content is just the task title.
+* Task file is just themd file md title.
+```
+# Title
 
-* No timestamps or extra metadata for now.
+--- //End of parsed section content after will not be parsed and serve as user defined description.
+<Descipription user defined>
+
+```
+
+* No timestamps or extra metadata for now. (For now)
 
 * Detect ID collisions before creating files.
 
@@ -64,9 +73,9 @@ Start with a dynamic array. Add a hash map only if performance requires it.
 
 ### 5\. Project discovery
 
-* Find `.jtask` in the current directory or parent directories.
+* Find `tasks` in the current directory or parent directories.
 
-* Store tasks inside `.jtask/tasks/`.
+* Store tasks inside `tasks/`.
 
 * No global task storage in v1.
 
@@ -83,6 +92,10 @@ Start with a dynamic array. Add a hash map only if performance requires it.
 * Prefix and index resolution.
 
 * CLI polish and error handling.
+
+
+### Future addition 
+* A proper markdown parser for tags ,due dates and stuff.
 
 ### 7\. Out of scope for v1
 
