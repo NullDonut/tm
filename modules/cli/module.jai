@@ -2,7 +2,7 @@
 #import "task";
 #import "id";
 
-
+// Functions declartions and implementations
 #scope_file cmd_help :: () {
     print("Unknown command\n");
     exit(0);
@@ -46,13 +46,7 @@
     }
     print("%\n", "[INFO] Find mode");
     id: string = args[2];
-    idx := task_find(id);
-    if idx == -1 {
-        print("[INFO] Item not found.\n");
-        return;
-    } else {
-        print("Element found at local index: %\n", idx);
-    }
+    _idx: Find_Result = task_find(id);
 }
 
 #scope_file cmd_list :: () {

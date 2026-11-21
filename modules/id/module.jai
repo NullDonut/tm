@@ -41,14 +41,13 @@
     assert(error.kind == .NONE);
     random_seed(*r, xx instant.nanoseconds);
     for 1..count {
-        w: = random_get_within_range(*r, 1, 36);
+        w: u8 = xx random_get_within_range(*r, 1, 36);
         if w <= 10 {
             w += 47;
-        } else if w <= 36 {
-            w += 97 - 11;
+        } else {
+            w += 86;
         }
-        array_add(*arr, xx w);
+        array_add(*arr, w);
     }
-
     return to_string(arr);
 }

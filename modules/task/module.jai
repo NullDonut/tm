@@ -1,7 +1,9 @@
 #import "File";
 #import "Basic";
 #import "id";
+#import "String";
 
+// Structs and Enums
 Task_Status :: enum {
     TASK_COMPLETED;
     TASK_UNCOMPLETED;
@@ -16,6 +18,19 @@ Task :: struct {
 
 task_array: [..] Task;
 
+Find_Status :: enum {
+    AMBIGUOS;
+    FOUND;
+    NOT_FOUND;
+}
+
+Find_Result :: struct {
+    status: Find_Status = .NOT_FOUND;
+    idx: s64 = -1;
+    idx_possibles: [..] s64;
+}
+
+
 task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK_UNCOMPLETED) {
     array_add(*task_array, Task.{ id, content, status });
     folder_name := tprint("./tasks/%", id);
@@ -28,13 +43,41 @@ task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK
     assert(file_write(*fp, content));
 }
 
-task_find :: (id: string) -> s64 {
+task_find :: (input_id: string) -> Find_Result {
+    ft: Find_Result;
+    defer array_add(*ft.idx_possibles);
     for task_array {
-        if it.id == id {
-            return it_index + 1;
+        if slice(it.id, 0, input_id.count) == input_id {
+            array_add(*ft.idx_possibles, it_index);
         }
     }
-    return -1;
+    if (ft.idx_possibles.count == 1) {
+        ft.idx = ft.idx_possibles[0];
+        ft.status = .FOUND;
+    } else if (ft.idx_possibles.count > 1) {
+        ft.idx = -1;
+        ft.status = .AMBIGUOS;
+    } else {
+        ft.idx = -1;
+        ft.status = .NOT_FOUND;
+    }
+
+    // Printing
+
+    if (ft.status == .FOUND) {
+        print("Element found at idx : % \n", ft.idx);
+    } else if (ft.status == .AMBIGUOS) {
+        print("Multiple elements found from the prefix.\n");
+        for ft.idx_possibles {
+            task_individual_list(it);
+        }
+        print("Please use more accurate prefix\n");
+    } else {
+        print("Not found\n");
+    }
+
+
+    return ft;
 }
 
 task_list :: () {
@@ -43,17 +86,22 @@ task_list :: () {
         print("[INFO] No tasks found.\n");
         return;
     }
-    ele: Task;
     for 0..count - 1 {
-        ele = task_array[it];
-        SPACES := 24;
-        SPACES -= ele.id.count;
-        print("[%]", ele.id);
-        for 0..SPACES - 1 {
-            print(" ");
-        }
-        print("% (%)\n", ele.content, task_status_to_string(ele.status));
+        task_individual_list(it);
     }
+}
+
+task_individual_list :: (it: int) {
+    ele: Task;
+    ele = task_array[it];
+    SPACES := 24;
+    SPACES -= ele.id.count;
+    print("[%]", ele.id);
+    for 0..SPACES - 1 {
+        print(" ");
+    }
+    print("% (%)\n", ele.content, task_status_to_string(ele.status));
+
 }
 
 task_status_to_string :: (status: Task_Status) -> string {
