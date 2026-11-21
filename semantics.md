@@ -8,11 +8,10 @@ This is a task list that be used as a issue tracker,bug tracker and go along wit
 
 ```text
 project/
-└── .jtask/
-    └── tasks/
-        ├── a7f2c9b1/TASK.md
-        ├── b912e4a2/TASK.md
-        └── c831d7f4
+   └── tasks/
+       ├── a7f2c9b1/TASK.md
+       ├── b912e4a2/TASK.md
+       └── c831d7f4
 ```
 
 * One main task file per task and description and other supporting documents.
