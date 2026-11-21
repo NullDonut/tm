@@ -2,6 +2,7 @@
 #import "Basic";
 #import "id";
 #import "String";
+#import "File_Utilities";
 
 // Structs and Enums
 Task_Status :: enum {
@@ -71,6 +72,25 @@ task_show :: (s: string) {
         ele: Task = task_array[ft.idx];
         print("Task: %\n", ele.content);
         print("ID: %\n", ele.id);
+    } else if (ft.status == .AMBIGUOS) {
+        print("Multiple elements found from the prefix.\n");
+        for ft.idx_possibles {
+            task_individual_list(it);
+        }
+        print("Please use more accurate prefix\n");
+    } else {
+        print("Not found\n");
+    }
+}
+
+task_remove :: (s: string) {
+    ft: Find_Result = task_find(s);
+    if (ft.status == .FOUND) {
+        id := task_array[ft.idx].id;
+        folder_name := tprint("./tasks/%", id);
+        ok := delete_directory_tree(folder_name);
+        assert(ok);
+        print("Successfully deleted item with id:% \n", id);
     } else if (ft.status == .AMBIGUOS) {
         print("Multiple elements found from the prefix.\n");
         for ft.idx_possibles {

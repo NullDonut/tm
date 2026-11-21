@@ -21,6 +21,8 @@
         cmd_skip();
     } else if main_command_flag == "show" {
         cmd_show(args);
+    } else if main_command_flag == "remove" {
+        cmd_remove(args);
     } else {
         cmd_help();
     }
@@ -49,6 +51,15 @@
     task_show(id);
 }
 
+#scope_file cmd_remove :: (args: [] string) {
+    if args.count < 3 {
+        print("[ERROR] Insufficient arguments\n");
+        return;
+    }
+    print("%\n", "[INFO] Remove mode");
+    id: string = args[2];
+    task_remove(id);
+}
 
 #scope_file cmd_list :: () {
     print("%\n\n", "[INFO] List mode");
