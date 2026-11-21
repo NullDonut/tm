@@ -22,6 +22,13 @@ A minimal, local project filesystem oriented task manager with permanent short i
 tm edit a7345a1
 tm edit a77 //Also accepted as a prefix matching.
 tm edit a //If multiple commits are present will show choice.
+tm add Fix compiler
+tm list
+tm show a7f2
+tm edit a7f
+tm remove a7f
+tm help
+
 ```
 
 ## Installation
