@@ -62,10 +62,15 @@ task_find :: (input_id: string) -> Find_Result {
         ft.status = .NOT_FOUND;
     }
 
-    // Printing
+    return ft;
+}
 
+task_show :: (s: string) {
+    ft: Find_Result = task_find(s);
     if (ft.status == .FOUND) {
-        print("Element found at idx : % \n", ft.idx);
+        ele: Task = task_array[ft.idx];
+        print("Task: %\n", ele.content);
+        print("ID: %\n", ele.id);
     } else if (ft.status == .AMBIGUOS) {
         print("Multiple elements found from the prefix.\n");
         for ft.idx_possibles {
@@ -75,9 +80,6 @@ task_find :: (input_id: string) -> Find_Result {
     } else {
         print("Not found\n");
     }
-
-
-    return ft;
 }
 
 task_list :: () {

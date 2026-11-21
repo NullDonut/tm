@@ -19,8 +19,8 @@
         cmd_list();
     } else if main_command_flag == "skip" {
         cmd_skip();
-    } else if main_command_flag == "find" {
-        cmd_find(args);
+    } else if main_command_flag == "show" {
+        cmd_show(args);
     } else {
         cmd_help();
     }
@@ -39,15 +39,16 @@
     print("\n");
 }
 
-#scope_file cmd_find :: (args: [] string) {
+#scope_file cmd_show :: (args: [] string) {
     if args.count < 3 {
         print("[ERROR] Insufficient arguments\n");
         return;
     }
-    print("%\n", "[INFO] Find mode");
+    print("%\n", "[INFO] Show mode");
     id: string = args[2];
-    _idx: Find_Result = task_find(id);
+    task_show(id);
 }
+
 
 #scope_file cmd_list :: () {
     print("%\n\n", "[INFO] List mode");
