@@ -7,7 +7,12 @@ CMD_SHOW_INFO :: false;
 
 // Functions declartions and implementations
 #scope_file cmd_help :: () {
-    print("Unknown command\n");
+    print("tm-Task manager\t\tv0.0.1\n");
+    print("Usage:\n");
+    print("    tm add task1 task2 task3\n");
+    print("    tm remove <id>\n");
+    print("    tm show <id>\n");
+    print("    tm list\n");
     exit(0);
 }
 
