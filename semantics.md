@@ -18,12 +18,12 @@ project/
 
 * Filename is a randomly generated, permanent ID (a-z and 0-9).
 
-* Task file is just themd file md title.
+* Task file is just themd file md title. (TBD)
 ```
 # Title
 
 --- //End of parsed section content after will not be parsed and serve as user defined description.
-<Descipription user defined>
+<Description user defined>
 
 ```
 
@@ -35,11 +35,7 @@ project/
 
 * Exact ID matching.
 
-* Case-insensitive prefix matching.
-
 * Show matches when a prefix is ambiguous.
-
-* Optional temporary indexes, e.g. `@2`.
 
 * IDs never change when titles are edited.
 
@@ -51,53 +47,24 @@ jt list
 jt show a7f2
 jt edit a7f
 jt remove a7f
-jt paths
 jt help
 ```
 
-`jt edit` opens the task using `$EDITOR`.
-
-### 4\. In-memory structure
-
-```jai
-Task :: struct {
-    id: string;
-    title: string;
-}
-
-tasks: [..]Task;
-```
-
-Start with a dynamic array. Add a hash map only if performance requires it.
+(Not implemented TBD) `jt edit` opens the task using `$EDITOR`.
 
 ### 5\. Project discovery
 
 * Find `tasks` in the current directory or parent directories.
-
 * Store tasks inside `tasks/`.
-
-* No global task storage in v1.
-
-### 6\. Development order
-
-* Project and directory handling.
-
-* ID generation and task creation.
-
-* Loading and listing tasks.
-
-* Show, edit and remove.
-
-* Prefix and index resolution.
-
-* CLI polish and error handling.
-
+* All tasks are stored in `task/hex-id/task.md`
 
 ### Future addition 
 * A proper markdown parser for tags ,due dates and stuff.
 
-### 7\. Out of scope for v1
 
 No tags, priorities, descriptions, statuses, due dates, databases, sync or TUI.
+All other files are ignored or act description for user.
+For now md file will only contain the task until I create a markdown parser.
+
 
 Core principle: Keep each task as a normal file. JTask should manage those files, not hide them behind a complicated storage system.
