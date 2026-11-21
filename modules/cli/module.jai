@@ -19,6 +19,8 @@
         cmd_list();
     } else if main_command_flag == "skip" {
         cmd_skip();
+    } else if main_command_flag == "find" {
+        cmd_find(args);
     } else {
         cmd_help();
     }
@@ -26,10 +28,10 @@
 
 #scope_file cmd_add :: (args: [] string) {
     if (args.count < 3) {
-        print("[Error] Insufficient arguments\n");
+        print("[ERROR] Insufficient arguments\n");
         return;
     }
-    print("%\n\n", "[Info] Add mode");
+    print("%\n\n", "[INFO] Add mode");
     for 2..args.count - 1 {
         print("Adding task: %\n", args[it]);
         task_add(hex_gen(6), args[it]);
@@ -37,8 +39,24 @@
     print("\n");
 }
 
+#scope_file cmd_find :: (args: [] string) {
+    if args.count < 3 {
+        print("[ERROR] Insufficient arguments\n");
+        return;
+    }
+    print("%\n", "[INFO] Find mode");
+    id: string = args[2];
+    idx := task_find(id);
+    if idx == -1 {
+        print("[INFO] Item not found.\n");
+        return;
+    } else {
+        print("Element found at local index: %\n", idx);
+    }
+}
+
 #scope_file cmd_list :: () {
-    print("%\n\n", "[Info] List mode");
+    print("%\n\n", "[INFO] List mode");
     task_list();
     print("\n");
 }

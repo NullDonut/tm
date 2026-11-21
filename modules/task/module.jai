@@ -28,6 +28,15 @@ task_add :: (id: string, content: string, status: Task_Status = Task_Status.TASK
     assert(file_write(*fp, content));
 }
 
+task_find :: (id: string) -> s64 {
+    for task_array {
+        if it.id == id {
+            return it_index + 1;
+        }
+    }
+    return -1;
+}
+
 task_list :: () {
     count := task_array.count;
     if (count == 0) {
