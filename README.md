@@ -1,4 +1,4 @@
-# JTask
+# TM (Simple Task manager)
 
 - A project-specific task and issue manager with a file structure storage system made in Jai.
 - Fast cli tool
